@@ -15,9 +15,18 @@ namespace ChaseHelper
         {
             Utils.Utils u = new Utils.Utils();
             List<string[]> ls = u.csv2ListStringArray(csvpath);
-            
+            //string[] line;
+            Transaction t;
+            TransactionProcessor tp = new TransactionProcessor();
+            foreach (string[] line in ls)
+            {
+                t = tp.load(line);
+                tl.Add(t);
+                
+            }
 
-           
+
+       // https://username:password@github.com/username/repository.git
 
         }
 
