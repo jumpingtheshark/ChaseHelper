@@ -9,7 +9,8 @@ namespace ChaseHelper
     {
         static void Main(string[] args)
         {
-            ChaseProcessor cp = new ChaseProcessor();
+            ChaseProcessor cp = new ChaseProcessor(@"c:\m\chase.csv");
+             
             cp.loadData();
         }
     }

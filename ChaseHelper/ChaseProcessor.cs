@@ -8,7 +8,15 @@ namespace ChaseHelper
 {
     class ChaseProcessor
     {
-       public List<Transaction> tl = new List<Transaction>();
+
+        public ChaseProcessor (string path)
+        {
+            csvpath = path;
+
+
+        }
+
+        public List<Transaction> tl = new List<Transaction>();
         public string csvpath;
 
         public void loadData()
@@ -18,11 +26,16 @@ namespace ChaseHelper
             //string[] line;
             Transaction t;
             TransactionProcessor tp = new TransactionProcessor();
+            bool header = true;
             foreach (string[] line in ls)
             {
-                t = tp.load(line);
-                tl.Add(t);
-                
+                if (!header)
+                {
+                    t = tp.load(line);
+                    tl.Add(t);
+                }
+                else
+                    header = false;
             }
 
 

@@ -8,13 +8,13 @@ namespace ChaseHelper
     {
 
 
-        public string _01_details { get; set; }
-        public string _02_datestring {  get; set;  }
-        public DateTime _02_datetimedt;
-        public decimal _03_amount;
-        public string _04_type;
-        public decimal _05_balance;
-        public string _06_checknumber;
+        public string   _00_details { get; set; }
+        public string   _01_datestring {  get; set;  }
+        public string   _02_description { get; set; }
+        public decimal  _03_amount;
+        public string   _04_type;
+        public decimal  _05_balance;
+        public string   _06_checknumber;
         
 
 
