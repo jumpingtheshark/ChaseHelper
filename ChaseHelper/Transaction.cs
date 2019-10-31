@@ -15,6 +15,7 @@ namespace ChaseHelper
         public string   _04_type;
         public decimal  _05_balance;
         public string   _06_checknumber;
+		public DateTime transDate;
         
 
 

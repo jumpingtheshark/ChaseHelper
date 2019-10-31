@@ -1,13 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="Utils">
-      <HintPath>..\..\Utils\Utils\bin\Debug\netcoreapp2.2\Utils.dll</HintPath>
+      <HintPath>..\..\Utils\Utils\bin\Debug\netcoreapp3.0\Utils.dll</HintPath>
     </Reference>
   </ItemGroup>
 

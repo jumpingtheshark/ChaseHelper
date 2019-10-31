@@ -9,9 +9,17 @@ namespace ChaseHelper
     {
         static void Main(string[] args)
         {
-            ChaseProcessor cp = new ChaseProcessor(@"c:\m\chase.csv");
+            ChaseProcessor cp = new ChaseProcessor(@"c:\a2\f.csv");
              
             cp.loadData();
+			int daysback = -30;
+			cp.TransactionSum(daysback);
+			Console.WriteLine("Days Back: " + daysback.ToString());
+			Console.WriteLine("Spent: " + cp.debitSum.ToString());
+			Console.WriteLine("Earned: " + cp.creditSum.ToString());
+			Console.ReadLine();
+
+			
         }
     }
 }

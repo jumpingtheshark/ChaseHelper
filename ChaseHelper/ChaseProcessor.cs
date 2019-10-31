@@ -18,11 +18,13 @@ namespace ChaseHelper
 
         public List<Transaction> tl = new List<Transaction>();
         public string csvpath;
+		public decimal debitSum;
+		public decimal creditSum;
 
         public void loadData()
         {
-            Utils.Utils u = new Utils.Utils();
-            List<string[]> ls = u.csv2ListStringArray(csvpath);
+            
+            List<string[]> ls = Utils.CSVHelper.csv2ListStringArray(csvpath);
             //string[] line;
             Transaction t;
             TransactionProcessor tp = new TransactionProcessor();
@@ -42,6 +44,32 @@ namespace ChaseHelper
        // https://username:password@github.com/username/repository.git
 
         }
+
+		public void TransactionSum(int daysback)
+		{
+			debitSum = 0;
+			creditSum = 0;
+
+			foreach (var t in tl)
+			
+				if (
+					 t.transDate > DateTime.Now.AddDays(daysback) 
+					&&
+					t._02_description.ToLower().Contains("online transfer")==false 
+					&&
+					t._02_description.ToLower().Contains("smart llc") == false
+					)
+				{
+					if (0 > t._03_amount)
+						debitSum = debitSum + t._03_amount;
+					else
+						creditSum = creditSum + t._03_amount;
+				}
+			
+
+		}
+
+
 
     }
 }
