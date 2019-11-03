@@ -12,13 +12,18 @@ namespace ChaseHelper
             ChaseProcessor cp = new ChaseProcessor(@"c:\a2\f.csv");
              
             cp.loadData();
+			cp.standardReport();
+
+			Console.ReadLine();
+			
+			/*
 			int daysback = -30;
 			cp.TransactionSum(daysback);
 			Console.WriteLine("Days Back: " + daysback.ToString());
 			Console.WriteLine("Spent: " + cp.debitSum.ToString());
 			Console.WriteLine("Earned: " + cp.creditSum.ToString());
 			Console.ReadLine();
-
+			*/
 			
         }
     }
