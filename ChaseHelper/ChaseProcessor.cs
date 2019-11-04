@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Utils;
 using System.Linq;
+using Utils;
 
 namespace ChaseHelper
 {
@@ -214,8 +215,7 @@ namespace ChaseHelper
 			var fl = tl.Where(f => f._02_description.ToLower().Contains("online transfer") == false)
 				.Where(f => f._02_description.ToLower().Contains("atm checking transfer") == false)
 				.Where(f => f._02_description.ToLower().Contains("atm savings transfer") == false)
-				.Where(f => f.transDate >= sdate)
-				.Where(f => f.transDate <= edate);
+				.Where(f => Utils.Dater.BetweenInclusive(sdate, edate, f.transDate));
 			
 
 			foreach (var fll in fl)
