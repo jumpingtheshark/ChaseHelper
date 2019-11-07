@@ -10,12 +10,7 @@ namespace ChaseHelper
     class ChaseProcessor
     {
 
-        public ChaseProcessor (string path)
-        {
-            csvpath = path;
-
-
-        }
+       
 
         public List<Transaction> tl = new List<Transaction>();
         public string csvpath;
@@ -23,7 +18,16 @@ namespace ChaseHelper
 		public decimal creditSum;
 		public StringBuilder sb = new StringBuilder();// command line output
 
-        public void loadData()
+		public ChaseProcessor(string path)
+		{
+			csvpath = path;
+			sb.Append(DateTime.Now.DayOfWeek.ToString() + ", " + DateTime.Now.ToString());
+			sb.Append(Environment.NewLine);
+
+
+		}
+
+		public void loadData()
         {
             
             List<string[]> ls = Utils.CSVHelper.csv2ListStringArray(csvpath);
@@ -50,6 +54,7 @@ namespace ChaseHelper
 		private void writePeriod (StringBuilder sb, int daysback)
 		{
 
+		
 			sb.Append(Environment.NewLine);
 			sb.Append("Days Back: " + daysback.ToString());
 			sb.Append(" \t");
@@ -67,7 +72,8 @@ namespace ChaseHelper
 		public void monthlyDetails (int monthsBack )
 		{
 			sb.Append(Environment.NewLine);
-			sb.Append("monthly details");
+			sb.Append(Environment.NewLine);
+			sb.Append("discrete monthly details");
 			sb.Append(Environment.NewLine);
 			for (int i =0; i> monthsBack; i--)
 			{
@@ -144,7 +150,26 @@ namespace ChaseHelper
 		}
 
 
-		public void standardReport ()
+		public void monthlies ()
+		{
+			for (int i = 0; i > -6; i--)
+			{
+				sb.Append(Environment.NewLine);
+				DateInterval di = new DateInterval(i);
+				TransactionSum(di.sdate, di.edate);
+				sb.Append(di.sdate.ToString("MMM"));
+				sb.Append(": \t ");
+				sb.Append("debits: " + debitSum.ToString("C"));
+				sb.Append(" \t credits: " + creditSum.ToString("C"));
+				sb.Append(" \t" + "surplus: " + (creditSum + debitSum).ToString("C"));
+
+
+			}
+
+
+
+		}
+		public void daysBack ()
 		{
 			// money spent and earned over the last 7, 14,  21 and 30 days
 			// also, money spent on bills, and other stuff
@@ -177,31 +202,8 @@ namespace ChaseHelper
 			sb.Append("Monthlies:");
 			sb.Append(Environment.NewLine);
 
-			for (int i = 0; i > -6; i-- )
-			{
-				sb.Append(Environment.NewLine);
-				DateInterval di = new DateInterval(i);
-				TransactionSum(di.sdate, di.edate);
-				sb.Append(di.sdate.ToString("MMM"));
-				sb.Append(": \t ");
-				sb.Append("debits: " + debitSum.ToString("C"));
-				sb.Append(" \t credits: " + creditSum.ToString("C"));
-				sb.Append(" \t" + "surplus: " + (creditSum + debitSum).ToString("C"));
-
-
-			}
-			
 			
 
-
-
-
-			//int daysback = -30;
-			//cp.TransactionSum(daysback);
-			//Console.WriteLine("Days Back: " + daysback.ToString());
-			//Console.WriteLine("Spent: " + cp.debitSum.ToString());
-			//Console.WriteLine("Earned: " + cp.creditSum.ToString());
-			//Console.ReadLine();
 
 		}
 		

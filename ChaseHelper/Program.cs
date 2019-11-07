@@ -20,28 +20,18 @@ namespace ChaseHelper
 			ChaseProcessor cp = new ChaseProcessor(@"c:\a2\f.csv");
              
             cp.loadData();
-			cp.standardReport();
 			cp.daysDiscrete(-40);
 			cp.weeksDiscrete(-8);
+			cp.daysBack();
+			cp.monthlies();
+			
 			cp.monthlyDetails(-8);
 			Console.WriteLine(cp.sb.ToString());
-			Console.ReadLine();
-			return; 
-			/*
-			var studentNames = studentList.Where(s => s.Age > 18)
-							  .Select(s => s)
-							  .Where(st => st.StandardID > 0)
-							  .Select(s => s.StudentName);
-
-		*/
-
-			var fl = cp.tl.Where(f => f._02_description.ToLower().Contains("online transfer") == false);
-			int count = fl.Count();
-
-			//cp.standardReport();
-
+			Utils.Filer.writeAllText(@"c:\a2\" +DateTime.Now.Ticks.ToString()+".txt", cp.sb.ToString());
 			Console.ReadLine();
 			
+			
+
 			
 			
         }
