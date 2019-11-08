@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Utils">
       <HintPath>..\..\Utils\Utils\bin\Debug\netcoreapp3.0\Utils.dll</HintPath>
     </Reference>

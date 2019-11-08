@@ -3,26 +3,39 @@ using System.Collections.Generic;
 using System.Text;
 using Utils;
 using System.Linq;
-using Utils;
+
 
 namespace ChaseHelper
 {
     class ChaseProcessor
     {
-
+		// todo sql load
+		// todo transactions under/over forty
+		// list highest hits over the last 30 days
+		// list fees, tickets, etc...
        
 
-        public List<Transaction> tl = new List<Transaction>();
+        public List<Transaction> tl = new List<Transaction>();// starting unfiltered, may be filterd
+		
         public string csvpath;
 		public decimal debitSum;
 		public decimal creditSum;
 		public StringBuilder sb = new StringBuilder();// command line output
+		Dictionary<string, string> bills;
 
-		public ChaseProcessor(string path)
+
+		public ChaseProcessor(string path, string billsPath)
 		{
 			csvpath = path;
 			sb.Append(DateTime.Now.DayOfWeek.ToString() + ", " + DateTime.Now.ToString());
 			sb.Append(Environment.NewLine);
+
+			if (billsPath != "")
+			{
+
+				bills=Utils.Jsoner.dnr(billsPath);
+
+			}
 
 
 		}
@@ -207,6 +220,28 @@ namespace ChaseHelper
 
 		}
 		
+
+
+		public void applyFilter ()
+		{
+			foreach (var bill in bills)
+			{
+				if (bill.Value.Length > 2)
+					{
+
+					var c = tl
+						.Where(f => f._02_description.ToLower()
+
+						.Contains(bill.Value.ToLower()) == false)
+						.ToList();
+
+					tl = c;
+
+				} 
+   }
+
+
+		}
 	public void TransactionSum (DateTime sdate, DateTime edate)
 		{
 			// filter the list with linq;

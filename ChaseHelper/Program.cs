@@ -17,9 +17,12 @@ namespace ChaseHelper
 			
 
    
-			ChaseProcessor cp = new ChaseProcessor(@"c:\a2\f.csv");
+			ChaseProcessor cp = new ChaseProcessor(@"c:\a2\f.csv", @"c:\a2\bills.json");
              
             cp.loadData();
+
+			cp.applyFilter();
+
 			cp.daysDiscrete(-40);
 			cp.weeksDiscrete(-8);
 			cp.daysBack();
