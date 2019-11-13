@@ -12,7 +12,21 @@ namespace ChaseHelper
 		// todo sql load
 		// todo transactions under/over forty
 		// list highest hits over the last 30 days
+		// total spending grouped by month intervals 
+		// highest from each 2 week interval (goes along with the paycheck pattern)
+		// dumping into sql tables- raw data (with and without bills)
+		// table: daily summary spending (bills/no bills) 
+		//table: bills only
+		// table: weekly spending
+		//	table bi-weekly spending
+		// table: highest 10 purchases each month
+		//  table: transactions over 40
+		// table: clothing transactions
+		// table: all food transactions (including coffee, starbucks, etc..) 
+		// table: fast food transactions: starbucks, panera, etc.. 
 		// list fees, tickets, etc...
+		// non bill spending going backwards from most recent week by week 
+
        
 
         public List<Transaction> tl = new List<Transaction>();// starting unfiltered, may be filterd
@@ -40,6 +54,18 @@ namespace ChaseHelper
 
 		}
 
+		public void runMainReport( bool applyBillsFilter)
+		{
+			if (applyBillsFilter)
+				applyFilter();
+
+			daysDiscrete(-40);
+			weeksDiscrete(-8);
+			daysBack();
+			monthlies();
+			monthlyDetails(-8);
+
+		}
 		public void loadData()
         {
             
@@ -112,6 +138,7 @@ namespace ChaseHelper
 			}
 
 		}
+		// rework this to show week by week instead of 7 day intervals, so that it's easier to compare the numbers.  
 		public void weeksDiscrete(int weeksback)
 		{
 			sb.Append(Environment.NewLine);
@@ -219,9 +246,55 @@ namespace ChaseHelper
 
 
 		}
-		
 
 
+
+		public void getLatestBills()
+		{
+			// divide water by 3 since the village charges per season - or just exclude it all together? 
+			// I feel like I should include it for a more compelete picture. 
+
+			// todo - turn this into linq calls 
+			List<Transaction> lb = new List<Transaction>();
+			foreach (var bill in bills)
+			{
+				foreach (Transaction t  in tl)
+				{
+					if (
+						t._02_description.ToLower().
+						Contains(bill.Value.ToLower())
+						&& 
+						t._04_type != "FEE_TRANSACTION"
+						)
+						
+					{
+						var x = lb.Where(a => a._02_description.ToLower().Contains(bill.Value.ToLower()));
+						if (x.Count()==0)
+							lb.Add(new Transaction(t));
+					}
+								
+
+
+				}
+			}
+
+			decimal billSum = 0;
+			foreach (var t in lb)
+			{
+				sb.Append(t.toTabbedString());
+				sb.Append(Environment.NewLine);
+				billSum = billSum + t._03_amount;
+
+
+			}
+
+
+			sb.Append(Environment.NewLine);
+			sb.Append ("Total bills:  \t\t \t\t\t " + billSum.ToString());
+
+		}
+
+		// to do - how to do an end with linq extension methods - if not, then use the syntax 
 		public void applyFilter ()
 		{
 			foreach (var bill in bills)
@@ -230,9 +303,15 @@ namespace ChaseHelper
 					{
 
 					var c = tl
-						.Where(f => f._02_description.ToLower()
+						.Where(
+						f => f._02_description.ToLower()
 
-						.Contains(bill.Value.ToLower()) == false)
+						.Contains(bill.Value.ToLower()) == false
+						
+					
+						)
+						
+
 						.ToList();
 
 					tl = c;
