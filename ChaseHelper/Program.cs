@@ -21,7 +21,9 @@ namespace ChaseHelper
 			ChaseProcessor cp = new ChaseProcessor(@"c:\a2\f.csv", @"c:\a2\bills.json");
              
             cp.loadData();
-			cp.getLatestBills();
+
+
+			//cp.getLatestBills();
 			
 
 			

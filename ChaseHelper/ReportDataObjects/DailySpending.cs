@@ -9,6 +9,7 @@ namespace ChaseHelper.ReportDataObjects
 	
 	{
 		DateTime date { get; set; }
+		string dateString { get; set; }
 		Decimal debit { get; set; }
 
 		Decimal credit { get; set; }

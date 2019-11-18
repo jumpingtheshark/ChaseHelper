@@ -19,11 +19,11 @@ namespace Scratchpad
 
 
 
-		class Account 
+		class Account
 		{
 			// todo: sort charges by date desc, and use only linq to pick out the very first bill and add it to a new list of charges
 			// this will avoid using the loop in my main projet 
-			
+
 			// use a wher with linq to   
 			public List<Transaction> lt = new List<Transaction>();
 			Account()
@@ -41,7 +41,7 @@ namespace Scratchpad
 
 
 
-			}
+		}
 
 
 
@@ -52,10 +52,10 @@ namespace Scratchpad
 			public int tdate { get; set; }
 			public string merchant { get; set; }
 
-			public decimal amount { get; set; };
+			public decimal amount { get; set; }
 
-			
-		// fee or charge for simplicity 
+
+			// fee or charge for simplicity 
 			public string ttype { get; set; }
 
 
@@ -65,3 +65,4 @@ namespace Scratchpad
 		}
 
 	}
+}

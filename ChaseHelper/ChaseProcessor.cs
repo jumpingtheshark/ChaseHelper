@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using Utils;
 using System.Linq;
+using ChaseHelper.ReportDataObjects;
 
 
 namespace ChaseHelper
 {
-    class ChaseProcessor
+    public class ChaseProcessor
     {
 		// todo sql load
 		// todo transactions under/over forty
@@ -32,8 +33,6 @@ namespace ChaseHelper
         public List<Transaction> tl = new List<Transaction>();// starting unfiltered, may be filterd
 		
         public string csvpath;
-		public decimal debitSum;
-		public decimal creditSum;
 		public StringBuilder sb = new StringBuilder();// command line output
 		Dictionary<string, string> bills;
 
@@ -60,10 +59,10 @@ namespace ChaseHelper
 				applyFilter();
 
 			daysDiscrete(-40);
-			weeksDiscrete(-8);
-			daysBack();
-			monthlies();
-			monthlyDetails(-8);
+			//weeksDiscrete(-8);
+			//daysBack();
+			//monthlies();
+			//monthlyDetails(-8);
 
 		}
 		public void loadData()
@@ -89,7 +88,7 @@ namespace ChaseHelper
        // https://username:password@github.com/username/repository.git
 
         }
-
+		/*
 		private void writePeriod (StringBuilder sb, int daysback)
 		{
 
@@ -107,7 +106,9 @@ namespace ChaseHelper
 
 
 		}
+		*/
 
+		/*
 		public void monthlyDetails (int monthsBack )
 		{
 			sb.Append(Environment.NewLine);
@@ -138,7 +139,12 @@ namespace ChaseHelper
 			}
 
 		}
+		*/
+
+
+
 		// rework this to show week by week instead of 7 day intervals, so that it's easier to compare the numbers.  
+		/*
 		public void weeksDiscrete(int weeksback)
 		{
 			sb.Append(Environment.NewLine);
@@ -152,7 +158,7 @@ namespace ChaseHelper
 
 				DateTime dt2 = new DateTime(dt.Year, dt.Month, dt.Day, 0, 0, 0, 0);
 				DateTime dt3 = new DateTime(dt.Year, dt.Month, dt.Day, 0, 0, 0, 0);
-				dt3 = dt3.AddDays(6).AddHours(23);
+			
 
 				TransactionSum(dt2, dt3);
 				sb.Append(Environment.NewLine);
@@ -164,35 +170,38 @@ namespace ChaseHelper
 
 
 		}
-		
-  // to do: rewrite days discrete
-  // to do add a web api project that will call this and then return json from it and at least try to render the json 
+		*/
+
+
+		// to do: rewrite days discrete
+		// to do add a web api project that will call this and then return json from it and at least try to render the json 
+
+		public List<SpendingInterval> dailySpendingList = new List<SpendingInterval>();
 		public void daysDiscrete (int daysback )
 		{
-			sb.Append(Environment.NewLine);
-			sb.Append(Environment.NewLine);
-			sb.Append("Days Discrete: ");
-			sb.Append(Environment.NewLine);
+
+			SpendingInterval si;
 					
 		for (int i=0; i>=daysback; i--)
 			{
 				DateTime dt = DateTime.Now.AddDays(i);
 
-				DateTime dt2 = new DateTime(dt.Year, dt.Month, dt.Day, 0, 0, 0, 0);
-				DateTime dt3 = new DateTime(dt.Year, dt.Month, dt.Day, 0, 0, 0, 0);
-				dt3 = dt3.AddHours(23);
-				TransactionSum(dt2, dt3);
-				sb.Append(Environment.NewLine);
-				sb.Append(dt.ToShortDateString() + ": \t  debits: " + debitSum.ToString("C") + "  \t credits: " + creditSum.ToString("C"));
+				si = new SpendingInterval();
+				DateTime dt2 = new DateTime(dt.Year, dt.Month, dt.Day);
 
-
+				si.sdate = dt2;
+				si.edate = dt2;
+				TransactionSum(si);
+				dailySpendingList.Add(si);
 
 			}
+
+		
 
 
 		}
 
-
+		/*
 		public void monthlies ()
 		{
 			for (int i = 0; i > -6; i--)
@@ -209,10 +218,15 @@ namespace ChaseHelper
 
 			}
 
+	
+
 
 
 		}
-		public void daysBack ()
+	*/	
+ 
+ /*
+ public void daysBack ()
 		{
 			// money spent and earned over the last 7, 14,  21 and 30 days
 			// also, money spent on bills, and other stuff
@@ -250,8 +264,9 @@ namespace ChaseHelper
 
 		}
 
+*/
 
-
+		/*
 		public void getLatestBills()
 		{
 			// divide water by 3 since the village charges per season - or just exclude it all together? 
@@ -297,6 +312,8 @@ namespace ChaseHelper
 
 		}
 
+	*/
+
 		// to do - how to do an end with linq extension methods - if not, then use the syntax 
 		public void applyFilter ()
 		{
@@ -324,54 +341,31 @@ namespace ChaseHelper
 
 
 		}
-	public void TransactionSum (DateTime sdate, DateTime edate)
+	public void TransactionSum (SpendingInterval si)
 		{
 			// filter the list with linq;
 			// take out online transfer, smart llc and whatever else, and mom's deposits?  
-			debitSum = 0;
-			creditSum = 0;
+		
 
 			var fl = tl.Where(f => f._02_description.ToLower().Contains("online transfer") == false)
 				.Where(f => f._02_description.ToLower().Contains("atm checking transfer") == false)
 				.Where(f => f._02_description.ToLower().Contains("atm savings transfer") == false)
-				.Where(f => Utils.Dater.BetweenInclusive(sdate, edate, f.transDate));
+				.Where(f => Utils.Dater.BetweenInclusive(si.sdate, si.edate, f.transDate));
 			
 
 			foreach (var fll in fl)
 			{
 				if (0 > fll._03_amount)
-					debitSum = debitSum + fll._03_amount;
+					si.debit = si.debit + fll._03_amount;
 				else
-					creditSum = creditSum + fll._03_amount;
+					si.credit = si.credit + fll._03_amount;
 
 			}
 
 
 
-		}
 		
-		
-  public void TransactionSum(int daysback )
-		{
-			debitSum = 0;
-			creditSum = 0;
 
-			foreach (var t in tl)
-			
-				if (
-					 t.transDate > DateTime.Now.AddDays(daysback) 
-					&&
-					t._02_description.ToLower().Contains("online transfer")==false 
-
-					//&&
-					//t._02_description.ToLower().Contains("smart llc") == false
-					)
-				{
-					if (0 > t._03_amount)
-						debitSum = debitSum + t._03_amount;
-					else
-						creditSum = creditSum + t._03_amount;
-				}
 			
 
 		}

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ChaseHelper
 {
-    class Transaction
+    public class Transaction
     {
 		public Transaction(Transaction t)
 		{
