@@ -164,6 +164,9 @@ namespace ChaseHelper
 
 
 		}
+		
+  // to do: rewrite days discrete
+  // to do add a web api project that will call this and then return json from it and at least try to render the json 
 		public void daysDiscrete (int daysback )
 		{
 			sb.Append(Environment.NewLine);
