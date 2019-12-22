@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ChaseHelper
 {
-	class ChaseWriter
+	public class ChaseWriter
 	{
 
 
@@ -15,6 +15,8 @@ namespace ChaseHelper
 
 
 		}
+
+
 
 
 		public ChaseWriter(ChaseProcessor cp)

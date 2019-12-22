@@ -31,22 +31,27 @@ namespace ChaseHelper
        
 
         public List<Transaction> tl = new List<Transaction>();// starting unfiltered, may be filterd
-		
-        public string csvpath;
+		public string billsFile;
+        public string csvFile;
 		public StringBuilder sb = new StringBuilder();// command line output
 		Dictionary<string, string> bills;
 
 
-		public ChaseProcessor(string path, string billsPath)
+		public ChaseProcessor(
+				string basePath, 
+				string csvFile,
+				string billsFile
+			)
 		{
-			csvpath = path;
+			this.csvFile = basePath+csvFile;
+			this.billsFile = basePath + billsFile;
 			sb.Append(DateTime.Now.DayOfWeek.ToString() + ", " + DateTime.Now.ToString());
 			sb.Append(Environment.NewLine);
 
-			if (billsPath != "")
+			if (this.billsFile != "")
 			{
 
-				bills=Utils.Jsoner.dnr(billsPath);
+				bills=Utils.Jsoner.dnr(this.billsFile);
 
 			}
 
@@ -68,7 +73,7 @@ namespace ChaseHelper
 		public void loadData()
         {
             
-            List<string[]> ls = Utils.CSVHelper.csv2ListStringArray(csvpath);
+            List<string[]> ls = Utils.CSVHelper.csv2ListStringArray(csvFile);
             //string[] line;
             Transaction t;
             TransactionProcessor tp = new TransactionProcessor();
@@ -84,8 +89,6 @@ namespace ChaseHelper
                     header = false;
             }
 
-
-       // https://username:password@github.com/username/repository.git
 
         }
 		/*

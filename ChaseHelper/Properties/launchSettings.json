@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "ChaseHelper": {
+      "commandName": "Project",
+      "commandLineArgs": "c:\\\\github\\\\chaseHelper\\\\ChaseHelper\\\\settings.json"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
